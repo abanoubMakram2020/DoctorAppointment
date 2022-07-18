@@ -1,0 +1,35 @@
+﻿{
+  "Successfully": "تمت العمليه بنجاح",
+  "GeneralError": "حدث خطأ ، يرجى المحاولة مرة أخرى",
+
+  "FailedToInsert": "حدث خطأ ، لا يمكن الإضافة ",
+  "FailedToDelete": "حدث خطأ ، لا يمكن الحذف ",
+  "FailedToUpdate": "حدث خطأ ، لا يمكن التعديل ",
+  "ItemAlreadyExist": "العنصر موجود بالفعل",
+  "NoChanges": "لا يوجد تغييرات حدثت",
+
+  "InvalidData": "بيانات غير صالحة",
+  "EmptyData": "بيانات فارغة",
+  "NullValue": "بيانات فارغة",
+  "InvalidTeamType": "نوع الفريق غير صحيح",
+
+  "UnAuthorized": "حدث خطأ ، يرجى المحاولة مرة أخرى",
+  "NotDataFound": "حدث خطأ ، يرجى المحاولة مرة أخرى",
+  "InvalidCredentials": "حدث خطأ ، يرجى المحاولة مرة أخرى",
+  "InvalidEmail": "حدث خطأ ، يرجى المحاولة مرة أخرى",
+  "PasswordChanged": "حدث خطأ ، يرجى المحاولة مرة أخرى",
+  "PasswordChangeError": "حدث خطأ ، يرجى المحاولة مرة أخرى",
+  "ForgetPasswordMailSent": "حدث خطأ ، يرجى المحاولة مرة أخرى",
+  "ForgetPasswordDataNotFoundOrExpired": "حدث خطأ ، يرجى المحاولة مرة أخرى",
+  "InvalidProfileFileSize": "حدث خطأ ، يرجى المحاولة مرة أخرى",
+  "InvalidProfileFileExtention": "حدث خطأ ، يرجى المحاولة مرة أخرى",
+  "ForgetPasswordSuccessMessage": "حدث خطأ ، يرجى المحاولة مرة أخرى",
+  "ItemNotExist": "هذا العنصر غير موجود",
+  "ComplaintReseved": "تم إستقبال الشكوي بنجاح",
+  "COmplaintResevedDiscription": "يمكنكم متابعة حالة طالباتكم من خلال رقم الطلب : ",
+  "FailedToInsertDataIsExists": "حدث خطا بيانات موجودة مسبقا",
+  "CanNotInsertComplaintTypeToSectionAndSector": "لا يمكن اضافة نوع الشكوى للقسم و للقطاع واحد منهم فقط",
+  "CanNotInsertSameComplaintType": "نوع الشكوى هذا موجود بالفعل ولا يمكن إدخاله مرة أخرى...بامكانك تحديث البيانات",
+  "test_key": "test fluent valiation",
+  "NotFound": "NotFound"
+}

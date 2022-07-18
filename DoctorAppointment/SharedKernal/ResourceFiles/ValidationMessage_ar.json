@@ -1,0 +1,7 @@
+﻿{
+  "Ksu_Validations_Length200": "لا يجب ان يزيد عن 200 حرف",
+  "CollegeDeanRequired": "عميد الكلية مطلوب",
+  "ViceDeanRequired": "وكيل الكلية مطلوب",
+  "DentistryRequired": "كلية طب الاسنان مطلوبة",
+  "MedicalRequired": "كلية الطب مطلوبة"
+}

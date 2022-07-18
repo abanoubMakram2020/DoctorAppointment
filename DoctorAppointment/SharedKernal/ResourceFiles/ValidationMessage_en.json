@@ -1,0 +1,9 @@
+﻿{
+  "Ksu_Validations_Length200": "No more than 200 characters",
+  "CollegeDeanRequired": "CollegeDean is required",
+  "ViceDeanRequired": "ViceDean is required",
+  "DentistryRequired": "Dentistry is required",
+  "MedicalRequired": "Medical is required"
+
+
+}

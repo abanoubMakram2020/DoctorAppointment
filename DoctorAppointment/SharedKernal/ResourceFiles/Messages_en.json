@@ -1,0 +1,35 @@
+{
+  "Successfully": "Process comlpeted successfully",
+  "GeneralError": "Something went wronge, try again shortly.",
+
+  "FailedToInsert": "Failed To Insert",
+  "FailedToDelete": "Faild to Delete",
+  "FailedToUpdate": "Faild to Update",
+  "ItemAlreadyExist": "Item Already Exist.",
+  "NoChanges": "No changes Occurs",
+
+  "InvalidData": "Invalid Data.",
+  "EmptyData": "Empty Data.",
+  "NullValue": "Null Value.",
+  "InvalidTeamType": "Team type is invalid.",
+
+  "UnAuthorized": "Something went wronge, try again shortly.",
+  "NotDataFound": "No Data Available.",
+  "InvalidCredentials": "Email or password may be incorrect.",
+  "InvalidEmail": "Invalid Email format.",
+  "PasswordChanged": "The password was changed successfully.",
+  "PasswordChangeError": "The new password may be invalid.",
+  "ForgetPasswordMailSent": "Forget Password Mail Sent.",
+  "ForgetPasswordDataNotFoundOrExpired": "Forget Password Data Not Found Or Expired.",
+  "InvalidProfileFileSize": "Invalid Profile FileSize.",
+  "InvalidProfileFileExtention": "Invalid Profile File Extention.",
+  "ForgetPasswordSuccessMessage": "Forget Password Success Message.",
+  "ItemNotExist": "\"this Item Not Exist\"",
+  "ComplaintReseved": "Complaint Reseved Successfuly",
+  "COmplaintResevedDiscription": "You Can See you Complaint by Num : ",
+  "FailedToInsertDataIsExists": "Failed To Insert Data IsExists : ",
+  "CanNotInsertComplaintTypeToSectionAndSector": "Cannot insert complaint type to section and sector one of them",
+  "CanNotInsertSameComplaintType": "This Complaint type already exists and cannot insert one again... u can update it",
+  "test_key": "test fluent valiation",
+  "NotFound": "NotFound"
+}
