@@ -15,7 +15,6 @@ using Microsoft.IdentityModel.Tokens;
 using SharedKernal.Common;
 using SharedKernal.Common.Configuration;
 using SharedKernal.Middlewares.Exception;
-using SharedKernal.Middlewares.JWTSettings;
 using SharedKernal.Middlewares.Swagger;
 using System.Globalization;
 using System.Net;
@@ -57,20 +56,6 @@ namespace DoctorAppointment.Infrastructure
             var _swaggerSettings = new SwaggerSettings();
             configuration.Bind(nameof(SwaggerSettings), _swaggerSettings);
 
-            var _jwtSettings = new JwtSettings();
-            configuration.Bind(nameof(JwtSettings), _jwtSettings);
-
-            var _commonConfigurations = new CommonConfigurations();
-            configuration.Bind(nameof(CommonConfigurations), _commonConfigurations);
-
-            var _eventBusSettings = new EventBusSettings();
-            configuration.Bind(nameof(EventBusSettings), _eventBusSettings);
-
-            var _healthCheckSettings = new HealthCheckSettings();
-            configuration.Bind(nameof(HealthCheckSettings), _healthCheckSettings);
-
-            var _APIsConfigurations = new APIsConfigurations();
-            configuration.Bind(nameof(APIsConfigurations), _APIsConfigurations);
 
             IConfigurationSection originsSection = configuration.GetSection("AllowedOrigins");
             AllowedOrigins = originsSection.AsEnumerable().Where(s => s.Value != null).Select(a => a.Value).ToArray();
@@ -126,27 +111,7 @@ namespace DoctorAppointment.Infrastructure
             });
             #endregion
 
-            #region Authentication
-            service.AddAuthentication(options =>
-            {
-                options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>
-            {
-                options.SaveToken = true;
-                options.RequireHttpsMetadata = false;
-                options.TokenValidationParameters = new TokenValidationParameters()
-                {
-                    RequireExpirationTime = JwtSettings.RequireExpirationTime,
-                    ValidateIssuer = JwtSettings.ValidateIssuer,
-                    ValidateAudience = JwtSettings.ValidateAudience,
-                    ValidAudience = JwtSettings.ValidAudience,
-                    ValidIssuer = JwtSettings.ValidIssuer,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtSettings.SecurityKey))
-                };
-            });
-            #endregion
+         
 
             #region AutoMapper
             var mapperConfig = new MapperConfiguration(config =>
@@ -157,40 +122,7 @@ namespace DoctorAppointment.Infrastructure
             service.AddSingleton(mapper);
             #endregion
 
-            //service.CommonAPIConfigurations();
-
-            #region MassTransit-RabbitMQ Configuration
-            service.AddMassTransit(config =>
-            {
-                //config.AddRequestClient<CreateRequestInputDTO>();
-                //config.AddRequestClient<UpdateActionRequestInputDTO>();
-                config.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(bus =>
-                {
-                    bus.Host(host: EventBusSettings.HostIpAddress, port: EventBusSettings.HostPort, virtualHost: "/", connectionName: string.Empty, configure: host =>
-                    {
-                        host.Username(EventBusSettings.Username);
-                        host.Password(EventBusSettings.Password);
-                    });
-                }));
-            });
-            service.AddMassTransitHostedService();
-
-            #endregion MassTransit-RabbitMQ Configuration
-
-            #region Health Checks
-            service.AddHealthChecks()
-                   .AddSqlServer(name: "SQLServer-check",
-                                 connectionString: DatabaseConfiguration.ConnectionString,
-                                 healthQuery: "Select 1;",
-                                 failureStatus: HealthStatus.Unhealthy,
-                                 tags: new string[] { "SQLServer" })
-
-                   .AddRabbitMQ(name: "RabbitMQ-check",
-                                rabbitConnectionString: $"amqp://{EventBusSettings.HostIpAddress}:{EventBusSettings.HostPort}",
-                                failureStatus: HealthStatus.Unhealthy,
-                                tags: new string[] { "RabbitMQ" });
-
-            #endregion
+           
 
             service.AddSwaggerDocumentation(documentName: SwaggerSettings.Name, title: SwaggerSettings.Title, version: SwaggerSettings.Version, description: SwaggerSettings.Description);
             service.AddEndpointsApiExplorer();
@@ -206,7 +138,7 @@ namespace DoctorAppointment.Infrastructure
         /// <param name="app"></param>
         public static void Initialize(this IApplicationBuilder app)
         {
-            //Container = app.ApplicationServices;
+
 
             app.UseSwaggerDocumentation(documentName: SwaggerSettings.Name, title: SwaggerSettings.Title, version: SwaggerSettings.Version);
 
@@ -218,17 +150,8 @@ namespace DoctorAppointment.Infrastructure
             app.UseAuthorization();
             app.UseRequestLocalization();
 
-            #region Health Checks
-            // default endpoint: /healthmetrics
-            //app.UseHealthChecksPrometheusExporter();
-
-            // You could customize the endpoint
-            app.UseHealthChecksPrometheusExporter("/healthchecks");
-
-            // Customize HTTP status code returned(prometheus will not read health metrics when a default HTTP 503 is returned)
-            app.UseHealthChecksPrometheusExporter("/healthchecks", options => options.ResultStatusCodes[HealthStatus.Unhealthy] = (int)HttpStatusCode.OK);
-            #endregion
-
+    
+            app.UseCors(nameof(AllowedOrigins));
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHealthChecksUI();
@@ -241,43 +164,7 @@ namespace DoctorAppointment.Infrastructure
                 });
             });
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="service"></param>
-        public static void CommonAPIConfigurations(this IServiceCollection service, IHttpContextAccessor httpContextAccessor)
-        {
-            service.AddHttpClient(name: APIsConfigurations.CommonAPI.APIName, configureClient: client =>
-            {
-                string parameter = string.Empty;
-                if (httpContextAccessor.HttpContext is not null && httpContextAccessor.HttpContext.Request.Headers.ContainsKey("Authorization"))
-                {
-                    var header = AuthenticationHeaderValue.Parse(httpContextAccessor?.HttpContext?.Request?.Headers["Authorization"]);
-                    if (header != null)
-                        parameter = header.Parameter;
-                }
-
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.BaseAddress = new Uri($"{APIsConfigurations.GatewayBaseURL}/{APIsConfigurations.CommonAPI.Version}/{APIsConfigurations.CommonAPI.APIName}/");
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MimeType.ApplicationJson));
-                client.DefaultRequestHeaders.AcceptLanguage.Add(new StringWithQualityHeaderValue(Thread.CurrentThread.CurrentCulture.TwoLetterISOLanguageName));
-                client.DefaultRequestHeaders.TryAddWithoutValidation("Content-type", MimeType.ApplicationJson);
-                client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", $"basic {parameter}");
-            }).ConfigurePrimaryHttpMessageHandler((c) =>
-            {
-                var clientCertificates = new X509Certificate2Collection();
-                var handler = new HttpClientHandler()
-                {
-                    ClientCertificateOptions = ClientCertificateOption.Manual,
-                    SslProtocols = SslProtocols.Tls12,
-                };
-                handler.ClientCertificates.AddRange(clientCertificates);
-                handler.SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls11 | SslProtocols.Tls;
-                handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
-                return handler;
-            });
-        }
+  
 
     }
 

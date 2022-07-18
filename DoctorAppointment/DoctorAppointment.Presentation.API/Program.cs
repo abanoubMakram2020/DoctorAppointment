@@ -20,7 +20,6 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
 
 builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
 {
-    //builder.RegisterType<HttpContextAccessor>().As<IHttpContextAccessor>().PropertiesAutowired().SingleInstance();
     DependencyResolutionFacade.Initialize(container: builder);
     #region Register Controller For Property DI
     System.Type controllerBaseType = typeof(BaseController);
@@ -33,7 +32,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
 
 builder.Services.Initialize();
 IHttpContextAccessor httpContextAccessor = builder.Services.BuildServiceProvider().GetRequiredService<IHttpContextAccessor>();
-builder.Services.CommonAPIConfigurations(httpContextAccessor: httpContextAccessor);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
