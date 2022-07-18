@@ -1,27 +1,16 @@
 ﻿using AutoMapper;
 using DoctorAppointment.Infrastructure.SQLContext;
-using HealthChecks.UI.Client;
 using MassTransit;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.IdentityModel.Tokens;
-using SharedKernal.Common;
 using SharedKernal.Common.Configuration;
 using SharedKernal.Middlewares.Exception;
 using SharedKernal.Middlewares.Swagger;
 using System.Globalization;
-using System.Net;
-using System.Net.Http.Headers;
-using System.Security.Authentication;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
 
 /// <summary>
 /// 
@@ -72,13 +61,15 @@ namespace DoctorAppointment.Infrastructure
             service.AddOptions();
 
             #region DbContext & Identity
-            service.AddDbContext<ApplicationDbContext>(options =>
+            service.AddEntityFrameworkNpgsql().AddDbContext<ApplicationDbContext>(options =>
             {
                 options.AddInterceptors(new DbContextInterceptor());
-                options.UseSqlServer(DatabaseConfiguration.ConnectionString);
+                //options.UseSqlServer(DatabaseConfiguration.ConnectionString);
+                options.UseNpgsql(DatabaseConfiguration.ConnectionString);
                 options.EnableSensitiveDataLogging();
             }, optionsLifetime: ServiceLifetime.Scoped);
 
+        
             #endregion
 
             #region AllowedOrigins
@@ -154,14 +145,10 @@ namespace DoctorAppointment.Infrastructure
             app.UseCors(nameof(AllowedOrigins));
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapHealthChecksUI();
+            
                 endpoints.MapControllers();
                 endpoints.MapControllerRoute(name: "areas", pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-                endpoints.MapHealthChecks("/health", new HealthCheckOptions
-                {
-                    Predicate = _ => true,
-                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-                });
+                
             });
         }
   

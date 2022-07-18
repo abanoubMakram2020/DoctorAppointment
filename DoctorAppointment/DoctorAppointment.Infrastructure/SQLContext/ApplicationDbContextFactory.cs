@@ -28,7 +28,7 @@ namespace DoctorAppointment.Infrastructure.SQLContext
         public ApplicationDbContext CreateDbContext(string[] args)
         {
             var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            builder.UseSqlServer(DatabaseConfiguration.ConnectionString);
+            builder.UseNpgsql(DatabaseConfiguration.ConnectionString);
             return new ApplicationDbContext(builder.Options);
         }
     }

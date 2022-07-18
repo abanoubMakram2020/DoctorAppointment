@@ -25,16 +25,6 @@ namespace DoctorAppointment.Domain.Data.Entities
 
 
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        protected override IEnumerable<object> GetAtomicValues()
-        {
-            yield return Id;
-            yield return DeptHeadApprovalId;
-            yield return CourseName;
-            yield return CourseCode;
-        }
+      
     }
 }
