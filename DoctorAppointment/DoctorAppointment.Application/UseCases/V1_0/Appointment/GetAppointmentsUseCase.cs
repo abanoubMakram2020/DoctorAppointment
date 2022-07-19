@@ -18,14 +18,14 @@ namespace DoctorAppointment.Application.UseCases.V1_0
                 if (!all_Appointments_DB.Any())
                     return ResponseResultDto<List<AppointmentOutputDTO>>.NotFound(result: null, message: MessageResource.GetMessage(ResponseStatusCode.NotFound));
 
-                return ResponseResultDto<List<AppointmentOutputDTO>>.Success(result: Mapper.Map<List<AppointmentOutputDTO>>(all_Appointments_DB), message: MessageResource.GetMessage(ResponseStatusCode.NotFound));
+                return ResponseResultDto<List<AppointmentOutputDTO>>.Success(result: Mapper.Map<List<AppointmentOutputDTO>>(all_Appointments_DB), message: MessageResource.GetMessage(ResponseStatusCode.Successfully));
             }
             var appointments_DB = await AppointmentRepository.Get(x => x.AppointmentDate.Date == Convert.ToDateTime(model.Data).Date).ToListAsync();
 
             if (!appointments_DB.Any())
                 return ResponseResultDto<List<AppointmentOutputDTO>>.NotFound(result: null, message: MessageResource.GetMessage(ResponseStatusCode.NotFound));
 
-            return ResponseResultDto<List<AppointmentOutputDTO>>.Success(result: Mapper.Map<List<AppointmentOutputDTO>>(appointments_DB), message: MessageResource.GetMessage(ResponseStatusCode.NotFound));
+            return ResponseResultDto<List<AppointmentOutputDTO>>.Success(result: Mapper.Map<List<AppointmentOutputDTO>>(appointments_DB), message: MessageResource.GetMessage(ResponseStatusCode.Successfully));
         }
     }
 }
