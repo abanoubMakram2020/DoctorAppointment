@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using DoctorAppointment.Application.Validations;
 using DoctorAppointment.Infrastructure.SQLContext;
+using FluentValidation.AspNetCore;
 using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -57,6 +59,7 @@ namespace DoctorAppointment.Infrastructure
         public static void Initialize(this IServiceCollection service)
         {
             service.AddControllers()
+                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<AppointmentInputValidation>(lifetime: ServiceLifetime.Scoped))
                    .AddControllersAsServices();
             service.AddOptions();
 

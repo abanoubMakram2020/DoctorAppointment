@@ -18,7 +18,7 @@ namespace SharedKernal.Middlewares.Basees
         public string ReferenceCode { get; set; }
         public ResponseStatusCode StatusCode { get; set; }
         public string StatusName => StatusCode.ToString();
-
+        public Dictionary<string, List<string>> Errors { get; set; }
         /// <summary>
         /// Return Success Code => 1 
         /// </summary>
@@ -82,7 +82,21 @@ namespace SharedKernal.Middlewares.Basees
                 Result = result,
             };
         }
-
+        /// <summary>
+        /// Return MultiError code => 4 
+        /// </summary>
+        /// <param name="result"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public static ResponseResultDto<TResult> MultiError(Dictionary<string, List<string>> dic, string message)
+        {
+            return new ResponseResultDto<TResult>()
+            {
+                StatusCode = ResponseStatusCode.MultiError,
+                Message = message,
+                Errors = dic,
+            };
+        }
         /// <summary>
         /// Return MoveNotAccept code => 5 
         /// </summary>

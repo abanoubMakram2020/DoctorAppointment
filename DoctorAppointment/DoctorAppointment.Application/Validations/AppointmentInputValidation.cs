@@ -4,12 +4,14 @@ using DoctorAppointment.Domain.interfaces.Repositories.Entity;
 using FluentValidation;
 using SharedKernal.Middlewares.ResourcesReader;
 using SharedKernal.Middlewares.ResourcesReader.Message;
+using System.Text.RegularExpressions;
 
 namespace DoctorAppointment.Application.Validations
 {
     public class AppointmentInputValidation : AbstractValidator<AppointmentInputDTO>
     {
-        private const string PHONE_NUMBER_REGULAR_EXPRESSSION = @"[0 - 9]{11}";
+        private const string PHONE_NUMBER_REGULAR_EXPRESSSION = @"^01[0125][0-9]{8}$";
+        private const string TIME_SPAN_REGULAR_EXPRESSSION = @"((([0-1][0-9])|(2[0-3]))(:[0-5][0-9])(:[0-5][0-9])?)";
         private readonly IMessageResourceReader _messageResource;
         private readonly IAppointmentRepository _appointmentRepository;
         public AppointmentInputValidation(IMessageResourceReader messageResource, IAppointmentRepository appointmentRepository)
@@ -31,11 +33,40 @@ namespace DoctorAppointment.Application.Validations
             RuleFor(x => x.AppointmentDate).Must((appointmentDate) => { return CheckAppointmentDate(appointmentDate); })
                           .WithMessage(_messageResource.GetValidationMessage(ValidationMessageKey.AppointmentDateRequired));
 
-            RuleFor(x => x.AppointmentTimeFrom).Must((appointmentTimeFrom) => { return CheckAppointmentTimeFrom(appointmentTimeFrom); })
+            RuleFor(x => x).Must((model) => { return CheckAppointmentTimeFrom(model); })
                           .WithMessage(_messageResource.GetValidationMessage(ValidationMessageKey.AppointmentTimeFromRequired));
 
-            RuleFor(x => x.AppointmentTimeTo).Must((appointmentTimeTo) => { return CheckAppointmentTimeTo(appointmentTimeTo); })
+            RuleFor(x => x).Must((model) => { return CheckAppointmentTimeTo(model); })
                           .WithMessage(_messageResource.GetValidationMessage(ValidationMessageKey.AppointmentTimeToRequired));
+
+            RuleFor(x => x).Must((model) => { return CheckOverlapping(model); })
+                            .WithMessage(_messageResource.GetValidationMessage(ValidationMessageKey.TimeNotAvaliable));
+
+            RuleFor(x => x).Must((model) => { return CheckTimeValidation(model); })
+                            .WithMessage(_messageResource.GetValidationMessage(ValidationMessageKey.TimeToShouldBeMorethanTimeFrom));
+
+         
+        }
+
+        private bool CheckOverlapping(AppointmentInputDTO model)
+        {
+
+            if (string.IsNullOrWhiteSpace(model.AppointmentTimeFrom) || string.IsNullOrWhiteSpace(model.AppointmentTimeTo))
+                return false;
+
+            if ((!Regex.IsMatch(model.AppointmentTimeFrom, TIME_SPAN_REGULAR_EXPRESSSION)
+             || TimeSpan.Parse(model.AppointmentTimeFrom) == default(TimeSpan)))
+                return false;
+
+            if ((!Regex.IsMatch(model.AppointmentTimeTo, TIME_SPAN_REGULAR_EXPRESSSION)
+             || TimeSpan.Parse(model.AppointmentTimeTo) == default(TimeSpan)))
+                return false;
+
+            var appointments = _appointmentRepository.Get(x => x.Id != model.Id &&
+                                                      x.AppointmentDate.Date == model.AppointmentDate.Date &&
+                                                      x.AppointmentTimeFrom <= TimeSpan.Parse(model.AppointmentTimeTo) &&
+                                                      x.AppointmentTimeTo >= TimeSpan.Parse(model.AppointmentTimeFrom));
+            return appointments.Count() <= 1;
         }
 
         bool CheckPatientName(string? patientName) =>
@@ -45,12 +76,37 @@ namespace DoctorAppointment.Application.Validations
              (!string.IsNullOrWhiteSpace(patientPhoneNumber) && patientPhoneNumber.Length == 11);
 
         bool CheckAppointmentDate(DateTime? appointmentDate) =>
-             (appointmentDate.HasValue && appointmentDate > default(DateTime) && appointmentDate >= DateTime.Now);
+             (appointmentDate.HasValue && appointmentDate > default(DateTime) && appointmentDate.Value.Date >= DateTime.Now.Date);
 
-        bool CheckAppointmentTimeTo(TimeSpan? appointmentTimeTo) =>
-            (appointmentTimeTo.HasValue && appointmentTimeTo > default(TimeSpan));
+        bool CheckAppointmentTimeTo(AppointmentInputDTO model)
+        {
+            if (string.IsNullOrWhiteSpace(model.AppointmentTimeFrom) || string.IsNullOrWhiteSpace(model.AppointmentTimeTo))
+                return false;
 
-        bool CheckAppointmentTimeFrom(TimeSpan? appointmentTimeFrom) =>
-             (appointmentTimeFrom.HasValue && appointmentTimeFrom > default(TimeSpan));
+            return (Regex.IsMatch(model.AppointmentTimeTo, TIME_SPAN_REGULAR_EXPRESSSION)
+             && TimeSpan.Parse(model.AppointmentTimeTo) > default(TimeSpan));
+        }
+
+        bool CheckAppointmentTimeFrom(AppointmentInputDTO model)
+        {
+            if (string.IsNullOrWhiteSpace(model.AppointmentTimeFrom) || string.IsNullOrWhiteSpace(model.AppointmentTimeTo))
+                return false;
+
+            return (Regex.IsMatch(model.AppointmentTimeFrom, TIME_SPAN_REGULAR_EXPRESSSION)
+             && TimeSpan.Parse(model.AppointmentTimeFrom) > default(TimeSpan));
+        }
+
+        bool CheckTimeValidation(AppointmentInputDTO model)
+        {
+            if (string.IsNullOrWhiteSpace(model.AppointmentTimeFrom) || string.IsNullOrWhiteSpace(model.AppointmentTimeTo))
+                return false;
+
+            return (Regex.IsMatch(model.AppointmentTimeFrom, TIME_SPAN_REGULAR_EXPRESSSION) &&
+                   Regex.IsMatch(model.AppointmentTimeTo, TIME_SPAN_REGULAR_EXPRESSSION) &&
+                   (TimeSpan.Parse(model.AppointmentTimeFrom) > default(TimeSpan)) &&
+                     (TimeSpan.Parse(model.AppointmentTimeTo) > default(TimeSpan)) &&
+                   (TimeSpan.Parse(model.AppointmentTimeTo) > TimeSpan.Parse(model.AppointmentTimeFrom)));
+
+        }
     }
 }

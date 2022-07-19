@@ -14,5 +14,7 @@ namespace SharedKernal.Middlewares.ResourcesReader
         public const string AppointmentTimeFromRequired = "AppointmentTimeFromRequired";
         public const string AppointmentTimeToRequired   = "AppointmentTimeToRequired"  ;
         public const string InvalidMobileNumber         = "InvalidMobileNumber"        ;
+        public const string TimeNotAvaliable = "TimeNotAvaliable";
+        public const string TimeToShouldBeMorethanTimeFrom = "TimeToShouldBeMorethanTimeFrom";
     }
 }

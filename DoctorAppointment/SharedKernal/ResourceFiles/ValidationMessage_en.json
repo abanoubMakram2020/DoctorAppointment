@@ -4,6 +4,10 @@
   "AppointmentDateRequired": "Appointment Date Required",
   "AppointmentTimeFromRequired": "Appointment Time From Required",
   "AppointmentTimeToRequired": "Appointment Time To Required",
-  "InvalidMobileNumber": "Invalid Mobile Number"
-
+  "InvalidMobileNumber": "Invalid Mobile Number",
+  "TimeNotAvaliable": "Time Not Avaliable",
+  "Successfully": "Process comlpeted successfully",
+  "InvalidData": "Invalid Data.",
+  "NotDataFound": "No Data Available.",
+  "TimeToShouldBeMorethanTimeFrom": "Time To Should Be More than Time From"
 }

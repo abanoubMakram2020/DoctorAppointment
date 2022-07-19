@@ -3,7 +3,7 @@ using SharedKernal.Middlewares.Basees;
 
 namespace DoctorAppointment.Application.Interfases.UseCases.V1_0
 {
-    public interface IGetAppointmentsUseCase : IBaseUseCase<IEnumerable<AppointmentOutputDTO>>
+    public interface IGetAppointmentsUseCase : IBaseUseCase<DateTime, List<AppointmentOutputDTO>>
     {
     }
 }

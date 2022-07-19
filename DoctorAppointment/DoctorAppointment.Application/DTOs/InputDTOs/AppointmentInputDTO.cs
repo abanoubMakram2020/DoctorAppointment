@@ -6,7 +6,7 @@
         public string? PatientPhoneNumber { get; set; }
         public string? Notes { get; set; }
         public DateTime AppointmentDate { get; set; }
-        public TimeSpan AppointmentTimeFrom { get; set; }
-        public TimeSpan AppointmentTimeTo { get; set; }
+        public string? AppointmentTimeFrom { get; set; }
+        public string? AppointmentTimeTo { get; set; }
     }
 }
