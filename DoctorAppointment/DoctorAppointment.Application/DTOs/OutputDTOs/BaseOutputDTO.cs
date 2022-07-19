@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DoctorAppointment.Application.DTOs.OutputDTOs
+﻿namespace DoctorAppointment.Application.DTOs.OutputDTOs
 {
-    public record BaseOutputDTO
+    public class BaseOutputDTO<TPrimaryKey>
     {
+        public TPrimaryKey Id { get; set; }
+
+        public DateTime DateCreated { get; set; }
     }
 }

@@ -18,11 +18,9 @@ namespace DoctorAppointment.Infrastructure.DatabaseConfigurations
        
         public static string Date => "date";
         public static string DateTime => "timestamp";
-        public static string Bit => "bit";
-        public static string Tinyint => "tinyint";
+
         public static string Time => "time";
-        public static string Image => "image";
-        public static string Uniqueidentifier => "uniqueidentifier";
+     
 
     }
 }

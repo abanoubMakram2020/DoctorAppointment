@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DoctorAppointment.Application.DTOs.InputDTOs;
+using DoctorAppointment.Application.DTOs.OutputDTOs;
+using DoctorAppointment.Domain.Data.Entities;
 
 namespace DoctorAppointment.Infrastructure.Mapper
 {
@@ -16,7 +14,8 @@ namespace DoctorAppointment.Infrastructure.Mapper
 
         public void Initialize()
         {
-            //CreateMap<LookupValue, LookupValueInputDTO>().ReverseMap();
+            CreateMap<Appointment, AppointmentInputDTO>().ReverseMap();
+            CreateMap<Appointment, AppointmentOutputDTO>().ReverseMap();
         }
     }
 }

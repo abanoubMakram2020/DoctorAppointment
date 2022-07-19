@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DoctorAppointment.Application.DTOs.InputDTOs
+﻿namespace DoctorAppointment.Application.DTOs.InputDTOs
 {
-    internal class BaseInputDTO
+    public class BaseInputDTO<TPrimaryKey>
     {
+        public TPrimaryKey Id { get; set; }
+
+        public DateTime DateCreated { get; set; }
     }
 }

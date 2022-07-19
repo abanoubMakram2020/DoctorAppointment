@@ -10,10 +10,10 @@ namespace DoctorAppointment.Presentation.API.Areas.V1_0.Controllers
     {
 
 
-        [HttpGet]
-        [MapToApiVersion(APIVersion.Version1)]
-        public async Task<IActionResult> Get([FromServices] _UseCases.V1_0.IInsertSampleUseCase insertCandidateCourseUseCase, int id) =>
-            await Presenter.Handle(insertCandidateCourseUseCase.Handle);
+        //[HttpGet]
+        //[MapToApiVersion(APIVersion.Version1)]
+        //public async Task<IActionResult> Get([FromServices] _UseCases.V1_0.IInsertSampleUseCase insertCandidateCourseUseCase, int id) =>
+        //    await Presenter.Handle(insertCandidateCourseUseCase.Handle);
 
 
     }

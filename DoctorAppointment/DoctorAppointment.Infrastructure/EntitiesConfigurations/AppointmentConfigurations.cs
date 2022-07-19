@@ -14,7 +14,7 @@ namespace DoctorAppointment.Infrastructure.EntitiesConfigurations
             builder.Property(p => p.Id).ValueGeneratedOnAdd().HasColumnType(ColumnType.Int).IsRequired();
             builder.Property(p => p.PatientName).HasColumnType(ColumnType.Nvarchar64).IsRequired();
             builder.Property(p => p.PatientPhoneNumber).HasColumnType(ColumnType.Nvarchar16).IsRequired();
-            builder.Property(p => p.Notes).HasColumnType(ColumnType.Nvarchar1024).IsRequired();
+            builder.Property(p => p.Notes).HasColumnType(ColumnType.Nvarchar1024) ;
             builder.Property(p => p.AppointmentDate).HasColumnType(ColumnType.DateTime).IsRequired();
             builder.Property(p => p.AppointmentTimeFrom).HasColumnType(ColumnType.Time).IsRequired();
             builder.Property(p => p.AppointmentTimeTo).HasColumnType(ColumnType.Time).IsRequired();
