@@ -14,7 +14,7 @@ namespace DoctorAppointment.Infrastructure.SQLContext
 
         public static void Configure(DbContextOptionsBuilder<ApplicationDbContext> builder, string connectionString)
         {
-            builder.UseSqlServer(connectionString);
+            builder.UseNpgsql(connectionString);
         }
 
         #region DbSets
@@ -29,7 +29,7 @@ namespace DoctorAppointment.Infrastructure.SQLContext
             try
             {
                 #region Schema Configurations
-                modelBuilder.ApplyConfigurationsFromAssembly(typeof(CandidateCourseConfigurations).Assembly);
+                modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppointmentConfigurations).Assembly);
                 #endregion
 
                 //#region Start Seed Data

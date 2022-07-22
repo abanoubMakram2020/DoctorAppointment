@@ -16,7 +16,7 @@ namespace SharedKernal.Common.Enum
             Controls = 1,
             [EnumMessage("Actions")]
             Actions = 2,
-            [EnumMessage("ValidationMessage")]
+            [EnumMessage("ValidationMessage_{0}")]
             ValidationMessage = 3,
             [EnumMessage("Messages_{0}")]
             Message = 4,

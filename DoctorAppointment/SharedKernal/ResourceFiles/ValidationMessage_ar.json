@@ -1,7 +1,13 @@
 ﻿{
-  "Ksu_Validations_Length200": "لا يجب ان يزيد عن 200 حرف",
-  "CollegeDeanRequired": "عميد الكلية مطلوب",
-  "ViceDeanRequired": "وكيل الكلية مطلوب",
-  "DentistryRequired": "كلية طب الاسنان مطلوبة",
-  "MedicalRequired": "كلية الطب مطلوبة"
+  "PatientNameRequired": "ام المريض مطلوب بحد اقصي 64 حرف",
+  "PatientPhoneNumberRequired": "رقم الموبايل مطلوب ",
+  "AppointmentDateRequired": "تاريخ الحجز مطلوب",
+  "AppointmentTimeFromRequired": "الميعاد من مطلوب",
+  "AppointmentTimeToRequired": "الميعاد الي مطلوب",
+  "InvalidMobileNumber": "رقم الموبايل غير صحيح",
+  "TimeNotAvaliable": "هذا الميعاد غير متاح",
+  "Successfully": "تمت العمليه بنجاح",
+  "InvalidData": "بيانات غير صالحة",
+  "NotDataFound": "لا يوجد بيانات",
+  "TimeToShouldBeMorethanTimeFrom": "الوقت الي يجب ان يكون اكبر من الوقت من "
 }

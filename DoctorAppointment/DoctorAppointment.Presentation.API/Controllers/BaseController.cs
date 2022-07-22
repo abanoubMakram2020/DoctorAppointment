@@ -1,11 +1,10 @@
-﻿using DoctorAppointment.Presentation.API.Filters;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SharedKernal.Common;
 using SharedKernal.Middlewares.Basees;
 
 namespace DoctorAppointment.Presentation.API.Controllers
 {
-    [AuthorizationFilter]
+
     [ApiController]
     [Route(APIRoute.VersioningTemplate)]
     public abstract class BaseController : ControllerBase

@@ -1,0 +1,1 @@
+2022-07-19 18:30:52.229 +02:00 [INF] Sending file. Request path: '/favicon-32x32.png'. Physical path: 'N/A'
